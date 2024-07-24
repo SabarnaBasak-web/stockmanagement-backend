@@ -1,1 +1,2 @@
-export { AddEmployeeDto, EmployeeResponseDto } from './AddEmployee.dto';
+export { AddEmployeeDto } from './AddEmployee.dto';
+export { EmployeeResponseDto } from './EmployeeResponse.dto';

@@ -9,10 +9,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { IpService } from './ip.service';
-import { AddIpDto, IpAssignedResponseDto, UpdateIpDto } from './dto';
+import {
+  AddIpDto,
+  IpAssignedResponseDto,
+  IpWithEmployeeResponseDto,
+  UpdateIpDto,
+} from './dto';
 import { JwtGuard } from 'src/auth/guard/auth-guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import {
+  ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -46,6 +52,9 @@ export class IpController {
   @ApiNotFoundResponse({
     description: 'Invalid Employee Id',
   })
+  @ApiBadRequestResponse({
+    description: 'Ip already in use',
+  })
   assignIpToEmployee(
     @Body() body: UpdateIpDto,
     @Param('id', ParseIntPipe) ipId: number,
@@ -55,6 +64,10 @@ export class IpController {
 
   @Roles('superAdmin')
   @Get()
+  @ApiOkResponse({
+    description: 'Get all Ips with employee details',
+    type: IpWithEmployeeResponseDto,
+  })
   getAllIps() {
     return this.ipService.getAllIps();
   }
