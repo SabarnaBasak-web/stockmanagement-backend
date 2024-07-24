@@ -28,6 +28,14 @@ export class IpService {
       httpExceptionHandler('invalid employee id', HttpStatus.NOT_FOUND);
     }
 
+    const foundIp = await this.prisma.ip.findUnique({
+      where: {
+        id: ipId,
+      },
+    });
+    if (foundIp.inUse) {
+      httpExceptionHandler('Ip already in use', HttpStatus.BAD_REQUEST);
+    }
     const updateEmployeeIp = await this.prisma.employee.update({
       data: {
         ipId: ipId,
