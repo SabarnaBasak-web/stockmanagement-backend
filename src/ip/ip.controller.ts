@@ -26,6 +26,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { IpResponseDto } from './dto/';
+import { RoleEnum } from 'src/enums/role.enum';
 
 @UseGuards(JwtGuard)
 @Controller('ip')
@@ -33,7 +34,7 @@ import { IpResponseDto } from './dto/';
 @ApiSecurity('JWT-auth')
 export class IpController {
   constructor(private ipService: IpService) {}
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Post()
   @ApiCreatedResponse({
     description: 'Ip Created',
@@ -43,7 +44,7 @@ export class IpController {
     return this.ipService.addIp(dto);
   }
 
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Put('assignIp/:id')
   @ApiOkResponse({
     description: 'Assign the Ip to the employee',
@@ -62,7 +63,7 @@ export class IpController {
     return this.ipService.assignIpToEmployee(ipId, body);
   }
 
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Get()
   @ApiOkResponse({
     description: 'Get all Ips with employee details',
@@ -72,13 +73,13 @@ export class IpController {
     return this.ipService.getAllIps();
   }
 
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Get(':id')
   getIpDetailsById(@Param('id', ParseIntPipe) id: number) {
     return this.ipService.getIpDetailsById(id);
   }
 
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Put(':id')
   updateIdNumber(
     @Body('ipNumber') ipNumber: string,

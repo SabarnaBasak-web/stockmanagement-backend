@@ -12,6 +12,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CreateRouteDto, GetRoutesByRoleResponseDto } from './dto';
+import { RoleEnum } from 'src/enums/role.enum';
 
 @UseGuards(JwtGuard, RoleGuard)
 @ApiTags('routes')
@@ -21,7 +22,7 @@ import { CreateRouteDto, GetRoutesByRoleResponseDto } from './dto';
 export class RoutesController {
   constructor(private routesService: RoutesService) {}
 
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Post()
   @ApiCreatedResponse({ description: 'Route created', type: CreateRouteDto })
   createRoute(@GetUser('id') userId: number, @Body() request: CreateRouteDto) {

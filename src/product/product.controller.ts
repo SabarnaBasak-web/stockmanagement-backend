@@ -5,6 +5,7 @@ import { ProductService } from './product.service';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { ApiResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { RoleEnum } from 'src/enums/role.enum';
 
 @ApiTags('Product')
 @UseGuards(JwtGuard, RoleGuard)
@@ -18,7 +19,7 @@ export class ProductController {
     description: 'Add product',
     type: 'Product',
   })
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Post()
   addProduct(@Body() dto: AddProductDto) {
     return this.productService.addProductDetails(dto);
@@ -29,7 +30,7 @@ export class ProductController {
     description: 'Fetch All Products',
     type: 'Product',
   })
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Get()
   fetchAllProducts() {
     return this.productService.getAllProducts();
