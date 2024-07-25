@@ -19,6 +19,7 @@ import {
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
+import { RoleEnum } from 'src/enums/role.enum';
 
 @UseGuards(JwtGuard, RoleGuard)
 @Controller('employee')
@@ -27,7 +28,7 @@ import {
 export class EmployeeController {
   constructor(private employeeService: EmployeeService) {}
 
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Post()
   @ApiCreatedResponse({
     description: 'Employee Created',
@@ -38,7 +39,7 @@ export class EmployeeController {
     return this.employeeService.createEmployee(employeeDto);
   }
 
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Get()
   @ApiOkResponse({
     description: 'All Employee Details',
@@ -48,7 +49,7 @@ export class EmployeeController {
     return this.employeeService.getAllEmployees();
   }
 
-  @Roles('superAdmin')
+  @Roles(RoleEnum.SUPERADMIN)
   @Get(':id')
   @ApiOkResponse({
     description: 'Employee Details',
