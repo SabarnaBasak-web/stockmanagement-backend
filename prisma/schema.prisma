@@ -77,16 +77,16 @@ model Ups {
   gemNo   Int
   gemDate DateTime
 
-  brandName        String
-  serialNo         String    @unique
-  modelNo          String    @unique
-  deliveryDate     DateTime?
-  problem          String?
-  warrentStartDate DateTime?
-  warrentyEndDate  DateTime?
-  defunct          Boolean
-  isAmc            Boolean
-  eWaste           Boolean
+  brandName         String
+  serialNo          String    @unique
+  modelNo           String    @unique
+  deliveryDate      DateTime?
+  problem           String?
+  warrentyStartDate DateTime?
+  warrentyEndDate   DateTime?
+  defunct           Boolean
+  isAmc             Boolean
+  eWaste            Boolean
 
   productId Int
   product   Products @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -100,16 +100,16 @@ model Monitor {
   gemNo   Int
   gemDate DateTime
 
-  brandName        String
-  serialNo         String    @unique
-  modelNo          String    @unique
-  deliveryDate     DateTime?
-  problem          String?
-  warrentStartDate DateTime?
-  warrentyEndDate  DateTime?
-  defunct          Boolean
-  isAmc            Boolean
-  eWaste           Boolean
+  brandName         String
+  serialNo          String    @unique
+  modelNo           String    @unique
+  deliveryDate      DateTime?
+  problem           String?
+  warrentyStartDate DateTime?
+  warrentyEndDate   DateTime?
+  defunct           Boolean
+  isAmc             Boolean
+  eWaste            Boolean
 
   displaySize String
 
@@ -125,16 +125,16 @@ model Cpu {
   gemNo   Int
   gemDate DateTime
 
-  brandName        String
-  serialNo         String    @unique
-  modelNo          String    @unique
-  deliveryDate     DateTime?
-  problem          String?
-  warrentStartDate DateTime?
-  warrentyEndDate  DateTime?
-  defunct          Boolean
-  isAmc            Boolean
-  eWaste           Boolean
+  brandName         String
+  serialNo          String    @unique
+  modelNo           String    @unique
+  deliveryDate      DateTime?
+  problem           String?
+  warrentyStartDate DateTime?
+  warrentyEndDate   DateTime?
+  defunct           Boolean
+  isAmc             Boolean
+  eWaste            Boolean
 
   ssd                    String?
   hdd                    String?
