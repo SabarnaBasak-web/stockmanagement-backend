@@ -11,7 +11,7 @@ export class CreatedVendorResponse {
     description: 'Mobile number of the vendor',
     example: '1234567890',
   })
-  mobile: number;
+  mobile: string;
 
   @ApiProperty({
     description: 'address of the vendor',

@@ -52,7 +52,7 @@ model Vendor {
   id Int @id @default(autoincrement())
 
   name           String
-  mobile         Int
+  mobile         String
   address        String
   dateOfRegistry DateTime
 

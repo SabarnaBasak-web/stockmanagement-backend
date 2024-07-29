@@ -1,17 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
-export class CreateVendorPayload {
+export class UpdateVendorDetailsPayload {
   @ApiProperty({ description: 'Name of the vendor', example: 'John Doe' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
 
   @ApiProperty({
     description: 'Mobile number of the vendor',
     example: '1234567890',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   mobile: string;
 
@@ -19,13 +19,6 @@ export class CreateVendorPayload {
     description: 'address of the vendor',
     example: 'Some street address',
   })
-  @IsNotEmpty()
+  @IsOptional()
   address: string;
-
-  @ApiProperty({
-    description: 'Date of registry',
-    example: '03/05/1998',
-  })
-  @IsNotEmpty()
-  dateOfRegistry: Date;
 }

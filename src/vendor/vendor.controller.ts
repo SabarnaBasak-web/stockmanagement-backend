@@ -2,25 +2,30 @@ import {
   Body,
   Controller,
   Get,
-  Optional,
-  ParseBoolPipe,
+  Param,
+  ParseIntPipe,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { VendorService } from './vendor.service';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { RoleEnum } from 'src/enums/role.enum';
-import { CreatedVendorResponse, CreateVendorPayload } from './dto';
+import {
+  CreatedVendorResponse,
+  CreateVendorPayload,
+  UpdateVendorDetailsPayload,
+} from './dto';
 import {
   ApiCreatedResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guard/auth-guard';
-import { IsOptional } from 'class-validator';
 
 @UseGuards(JwtGuard)
 @ApiTags('Vendors')
@@ -40,7 +45,7 @@ export class VendorController {
   ): Promise<CreatedVendorResponse> {
     return this.vendorService.addVendor(createVendorPayload);
   }
-
+  // Todo: Need to add pagination
   @ApiOkResponse({
     description: 'Return all vendors',
     type: [CreatedVendorResponse],
@@ -54,5 +59,28 @@ export class VendorController {
     return search
       ? this.vendorService.getVendorDetailsByName(search)
       : this.vendorService.fetchAllVendors();
+  }
+
+  @ApiOkResponse({ description: 'Updated succesfully' })
+  @Put(':id')
+  updateVendorDetails(
+    @Body() updateDetails: UpdateVendorDetailsPayload,
+    @Param('id', ParseIntPipe) vendorId: number,
+  ): Promise<void> {
+    return this.vendorService.updateDetails(updateDetails, vendorId);
+  }
+
+  @ApiOkResponse({
+    description: 'Get vendor details by id',
+    type: CreatedVendorResponse,
+  })
+  @ApiNotFoundResponse({
+    description: 'Vendor Id does not exists',
+  })
+  @Get(':id')
+  getVendorDetailsById(
+    @Param('id', ParseIntPipe) vendorId: number,
+  ): Promise<CreatedVendorResponse> {
+    return this.vendorService.fetchVendorDetailsById(vendorId);
   }
 }
