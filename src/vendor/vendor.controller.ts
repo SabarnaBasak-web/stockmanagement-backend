@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Optional,
+  ParseBoolPipe,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { VendorService } from './vendor.service';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { RoleEnum } from 'src/enums/role.enum';
@@ -6,6 +15,7 @@ import { CreatedVendorResponse, CreateVendorPayload } from './dto';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
@@ -35,6 +45,7 @@ export class VendorController {
     description: 'Return all vendors',
     type: [CreatedVendorResponse],
   })
+  @ApiQuery({ name: 'search', required: false })
   @Roles(RoleEnum.SUPERADMIN)
   @Get()
   getAllVendors(
