@@ -4,7 +4,7 @@ import { JwtGuard } from 'src/auth/guard/auth-guard';
 import { UpsService } from './ups.service';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { RoleEnum } from 'src/enums/role.enum';
-import { AddUpsPayload } from './dto';
+import { AddUpsPayload, UpsCreatedResponse } from './dto';
 
 @UseGuards(JwtGuard)
 @ApiTags('Ups')
@@ -15,7 +15,7 @@ export class UpsController {
 
   @ApiCreatedResponse({
     description: 'New ups added',
-    type: AddUpsPayload,
+    type: UpsCreatedResponse,
   })
   @Roles(RoleEnum.SUPERADMIN)
   @Post()
