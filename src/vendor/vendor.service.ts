@@ -17,23 +17,51 @@ export class VendorService {
     const createdVendor = await this.prismaService.vendor.create({
       data: {
         ...createVendorPayload,
-        dateOfRegistry: createVendorPayload.dateOfRegistry,
+        dateOfRegistry: new Date(
+          Date.parse(createVendorPayload.dateOfRegistry),
+        ),
       },
     });
 
     return createdVendor;
   }
 
-  async fetchAllVendors(): Promise<CreatedVendorResponse[]> {
-    return await this.prismaService.vendor.findMany();
+  async fetchAllVendors(
+    take?: string,
+    cursor?: string,
+  ): Promise<CreatedVendorResponse[]> {
+    return await this.prismaService.vendor.findMany({
+      take: take ? parseInt(take) : 10,
+      ...(cursor &&
+        +cursor > 0 && {
+          skip: 1,
+          cursor: { id: +cursor },
+        }),
+      orderBy: {
+        name: 'asc',
+      },
+    });
   }
 
   async getVendorDetailsByName(
     searchName: string,
+    take?: string,
+    cursor?: string,
   ): Promise<CreatedVendorResponse[]> {
     return await this.prismaService.vendor.findMany({
+      take: take ? parseInt(take) : 10,
+      ...(cursor &&
+        +cursor > 0 && {
+          skip: 1,
+          cursor: { id: +cursor },
+        }),
       where: {
-        name: searchName,
+        name: {
+          contains: searchName,
+        },
+      },
+      orderBy: {
+        name: 'asc',
       },
     });
   }

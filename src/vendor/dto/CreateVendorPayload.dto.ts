@@ -12,7 +12,6 @@ export class CreateVendorPayload {
     example: '1234567890',
   })
   @IsNotEmpty()
-  @IsString()
   mobile: string;
 
   @ApiProperty({
@@ -27,5 +26,5 @@ export class CreateVendorPayload {
     example: '03/05/1998',
   })
   @IsNotEmpty()
-  dateOfRegistry: Date;
+  dateOfRegistry: string;
 }
