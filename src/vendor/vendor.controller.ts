@@ -18,6 +18,7 @@ import {
   UpdateVendorDetailsPayload,
 } from './dto';
 import {
+  ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -38,6 +39,9 @@ export class VendorController {
     description: 'Vendor Created',
     type: CreatedVendorResponse,
   })
+  @ApiBadRequestResponse({
+    description: 'Name/mobile/address/DateOfRegistry must not be empty,',
+  })
   @Roles(RoleEnum.SUPERADMIN)
   @Post()
   createVendor(
@@ -45,6 +49,7 @@ export class VendorController {
   ): Promise<CreatedVendorResponse> {
     return this.vendorService.addVendor(createVendorPayload);
   }
+
   // Todo: Need to add pagination
   @ApiOkResponse({
     description: 'Return all vendors',
@@ -55,10 +60,12 @@ export class VendorController {
   @Get()
   getAllVendors(
     @Query('search') search?: string,
+    @Query('take') take?: string,
+    @Query('cursor') cursor?: string,
   ): Promise<CreatedVendorResponse[]> {
     return search
-      ? this.vendorService.getVendorDetailsByName(search)
-      : this.vendorService.fetchAllVendors();
+      ? this.vendorService.getVendorDetailsByName(search, take, cursor)
+      : this.vendorService.fetchAllVendors(take, cursor);
   }
 
   @ApiOkResponse({ description: 'Updated succesfully' })
