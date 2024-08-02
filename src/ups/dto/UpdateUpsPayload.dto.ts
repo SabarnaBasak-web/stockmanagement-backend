@@ -1,32 +1,31 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
-export class AddUpsPayload {
+export class UpdateUpsPayload {
   @ApiProperty({ description: 'Gem number', example: 'gem-001' })
-  @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   gemNo: number;
 
   @ApiProperty({ description: 'Gem date', example: '08-09-2004' })
-  @IsNotEmpty()
+  @IsOptional()
   gemDate: Date;
 
   @ApiProperty({ description: 'Brand Name', example: 'APC' })
-  @IsNotEmpty()
+  @IsOptional()
   brandName: string;
 
   @ApiProperty({
     description: 'Serial number of the ups',
     example: '#serial-0001',
   })
-  @IsNotEmpty()
+  @IsOptional()
   serialNo: string;
 
   @ApiProperty({
     description: 'Model number of the ups',
     example: '#model-0001',
   })
-  @IsNotEmpty()
+  @IsOptional()
   modelNo: string;
 
   @ApiProperty({
@@ -54,22 +53,8 @@ export class AddUpsPayload {
     description: 'Defunct',
     example: 'false',
   })
-  @IsNotEmpty()
+  @IsOptional()
   defunct: boolean;
-
-  @ApiProperty({
-    description: 'is covered under AMC',
-    example: 'false',
-  })
-  @IsNotEmpty()
-  isAmc: boolean;
-
-  @ApiProperty({
-    description: 'ewaster',
-    example: 'false',
-  })
-  @IsNotEmpty()
-  eWaste: boolean;
 
   @ApiProperty({
     description: 'Date of delivery',
@@ -77,11 +62,4 @@ export class AddUpsPayload {
   })
   @IsOptional()
   deliveryDate: Date;
-
-  @ApiProperty({
-    description: 'Vendor id',
-    example: 'vendor-001',
-  })
-  @IsNotEmpty()
-  vendorId: number;
 }
