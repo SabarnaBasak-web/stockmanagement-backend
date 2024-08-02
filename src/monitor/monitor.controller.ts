@@ -8,7 +8,7 @@ import { CreatedMonitorResponse, CreateMonitorRequest } from './dto';
 import { PaginationQueryFilter } from 'src/assigned-products/dto';
 
 @UseGuards(JwtGuard)
-@ApiTags('Ups')
+@ApiTags('Monitor')
 @ApiSecurity('JWT-auth')
 @Controller('monitor')
 export class MonitorController {
