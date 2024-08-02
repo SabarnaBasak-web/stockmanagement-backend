@@ -72,7 +72,6 @@ export class AssignedProductsController {
   @Roles(RoleEnum.SUPERADMIN)
   @Get('/:serialNumber')
   searchAssignedProduct(@Param('serialNumber') serialNumber: string) {
-    console.log('Serial number', serialNumber);
     return this.assignedProductService.getAssignedProductsBySerialNumber(
       serialNumber,
     );

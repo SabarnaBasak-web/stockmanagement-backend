@@ -63,12 +63,9 @@ export class AssignedProductsService {
 
   async getAssignedProductsBySerialNumber(serialNumber: string) {
     const assignedProductsList =
-      await this.prismaService.assignedProducts.findMany({
+      await this.prismaService.assignedProducts.findUnique({
         where: { serialNo: serialNumber },
         include: { employee: true },
-        orderBy: {
-          dateOfIssue: 'desc',
-        },
       });
 
     return assignedProductsList;

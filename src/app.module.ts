@@ -12,6 +12,7 @@ import { CpuModule } from './cpu/cpu.module';
 import { AssignedProductsModule } from './assigned-products/assigned-products.module';
 import { UpsModule } from './ups/ups.module';
 import { VendorModule } from './vendor/vendor.module';
+import { MonitorModule } from './monitor/monitor.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { VendorModule } from './vendor/vendor.module';
     AssignedProductsModule,
     UpsModule,
     VendorModule,
+    MonitorModule,
   ],
   controllers: [],
   providers: [PrismaService],
