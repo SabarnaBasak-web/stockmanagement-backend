@@ -14,13 +14,16 @@ datasource db {
 }
 
 model Login {
-  id        Int     @id @default(autoincrement())
-  username  String  @unique
-  password  String
-  imagePath String?
+  id       Int     @id @default(autoincrement())
+  username String  @unique
+  password String
+  active   Boolean
 
   roleId Int
   role   Roles @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [empId], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Routes {
@@ -158,18 +161,19 @@ model Cpu {
 }
 
 model Employee {
-  id           Int     @id @default(autoincrement())
-  name         String
-  designation  String
-  cell         String
-  floorNumber  String
-  mobileNumber String
-  empId        String  @unique
-  active       Boolean
-
+  id               Int                @id @default(autoincrement())
+  name             String
+  designation      String
+  cell             String
+  floorNumber      String
+  mobileNumber     String
+  empId            String             @unique
+  active           Boolean
+  imagePath        String?
   ipId             Int?
   Ip               Ip?                @relation(fields: [ipId], references: [id])
   AssignedProducts AssignedProducts[]
+  Login            Login[]
 }
 
 model AssignedProducts {

@@ -23,6 +23,7 @@ export class MonitorService {
     if (!vendorDetails) {
       httpExceptionHandler('Incorrect vendor Id', HttpStatus.BAD_REQUEST);
     }
+    // TODO check if the serial number exists
     return await this.prismaService.monitor.create({
       data: {
         ...payload,
