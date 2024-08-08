@@ -20,6 +20,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { RoleEnum } from 'src/enums/role.enum';
+import { GetUser } from 'src/auth/decorator';
 
 @UseGuards(JwtGuard, RoleGuard)
 @Controller('employee')
@@ -40,16 +41,12 @@ export class EmployeeController {
   }
 
   @Roles(RoleEnum.SUPERADMIN)
-  @Get()
-  @ApiOkResponse({
-    description: 'All Employee Details',
-    type: [EmployeeResponseDto],
-  })
-  fetchAllEmployee() {
-    return this.employeeService.getAllEmployees();
+  @Roles(RoleEnum.SUPERADMIN)
+  @Get('/loggedUser')
+  getLoggedInUserDetails(@GetUser('id') userId: number) {
+    return this.employeeService.getLoggedInEmployeeDetailsById(userId);
   }
 
-  @Roles(RoleEnum.SUPERADMIN)
   @Get(':id')
   @ApiOkResponse({
     description: 'Employee Details',
@@ -58,5 +55,15 @@ export class EmployeeController {
   @ApiBadRequestResponse({ description: 'Incorrect Employee Id' })
   fetchEmployeeDetails(@Param('id', ParseIntPipe) userId: number) {
     return this.employeeService.getEmployeeDetailsById(userId);
+  }
+
+  @Roles(RoleEnum.SUPERADMIN)
+  @Get()
+  @ApiOkResponse({
+    description: 'All Employee Details',
+    type: [EmployeeResponseDto],
+  })
+  fetchAllEmployee() {
+    return this.employeeService.getAllEmployees();
   }
 }

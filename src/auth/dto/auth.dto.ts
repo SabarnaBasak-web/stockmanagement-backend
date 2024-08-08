@@ -14,16 +14,23 @@ export class SignUpAuthDto {
   @ApiProperty({ description: 'user name', example: 'johndoe' })
   @IsNotEmpty()
   username: string;
+
   @ApiProperty({ description: 'password', example: 'password' })
   @IsNotEmpty()
   password: string;
+
   @ApiProperty({ description: 'confirm password', example: 'password' })
   @IsNotEmpty()
   confirmPassword: string;
+
   @ApiProperty({ description: 'roleId', example: '1234', type: 'number' })
   @IsNotEmpty()
   @IsNumber()
   roleId: number;
+
+  @ApiProperty({ description: 'Employee id', example: 'emp-0001' })
+  @IsNotEmpty()
+  empId: string;
 }
 
 export class SignUpResponseDto {

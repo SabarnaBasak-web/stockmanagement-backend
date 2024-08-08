@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   ApiBadRequestResponse,
@@ -31,6 +31,7 @@ export class AuthController {
     return this.authService.signUp(dto);
   }
 
+  @HttpCode(200)
   @Post('login')
   @ApiOkResponse({
     description: 'Login successful response',

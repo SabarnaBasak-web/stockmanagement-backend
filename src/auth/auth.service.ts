@@ -14,7 +14,8 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
   async signUp(signUpRequest: SignUpAuthDto) {
-    const { confirmPassword, username, password, roleId } = signUpRequest;
+    const { confirmPassword, username, password, roleId, empId } =
+      signUpRequest;
 
     const userNameExists = await this.prisma.login.findFirst({
       where: { username: username },
@@ -30,6 +31,15 @@ export class AuthService {
       httpExceptionHandler('RoleId cannot be empty', HttpStatus.BAD_REQUEST);
     }
 
+    const employeeExists = await this.prisma.employee.findUnique({
+      where: {
+        empId: empId,
+      },
+    });
+
+    if (!employeeExists)
+      httpExceptionHandler('Employee does not exists', HttpStatus.NOT_FOUND);
+
     const roleExists = await this.prisma.roles.findFirst({
       where: { id: roleId },
     });
@@ -43,6 +53,8 @@ export class AuthService {
         username: username,
         password: hashedPassword,
         roleId: roleId,
+        employeeId: empId,
+        active: true,
       },
     });
     delete loginDetails.password;
@@ -54,6 +66,7 @@ export class AuthService {
     const loginDetails = await this.prisma.login.findFirst({
       where: {
         username: username,
+        active: true,
       },
       include: {
         role: true,
