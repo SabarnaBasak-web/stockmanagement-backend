@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { EmployeeResponseDto } from 'src/employee/dto';
 
-export class IpResponseDto {
+export class IpDataResponseDto {
   @ApiProperty({ description: 'unique id of ip', example: '10001' })
   id: string;
   @ApiProperty({ description: 'ip value', example: '10.10.2.1' })
@@ -12,6 +12,12 @@ export class IpResponseDto {
   inUse: boolean;
 }
 
+export class IpResponseDto {
+  @ApiProperty({ description: 'List of all Ips' })
+  data: IpDataResponseDto;
+  @ApiProperty({ description: 'total number of rows', example: '10' })
+  total: number;
+}
 export class IpAssignedResponseDto {
   @ApiProperty({ description: 'unique id of ip', example: '10001' })
   id: string;

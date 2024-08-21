@@ -36,10 +36,10 @@ export class UpsService {
   async fetchAllUpsList(
     paginationQuery: PaginationQueryFilter,
   ): Promise<UpsCreatedResponse[]> {
-    const { count, cursor } = paginationQuery;
+    const { take, cursor } = paginationQuery;
 
     return await this.prismaService.ups.findMany({
-      take: count ? count : 10,
+      take: take ? take : 10,
       ...(cursor &&
         +cursor > 0 && {
           skip: 1,

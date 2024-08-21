@@ -35,9 +35,9 @@ export class MonitorService {
   async getMonitorsList(
     paginationQuery: PaginationQueryFilter,
   ): Promise<CreatedMonitorResponse[]> {
-    const { count, cursor } = paginationQuery;
+    const { take, cursor } = paginationQuery;
     return await this.prismaService.monitor.findMany({
-      take: count ? count : 10,
+      take: take ? take : 10,
       ...(cursor &&
         +cursor > 0 && {
           skip: 1,

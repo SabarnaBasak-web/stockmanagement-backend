@@ -43,10 +43,10 @@ export class AssignedProductsService {
     });
   }
 
-  async getAllAssignedProducts(count: number, cursor?: number) {
+  async getAllAssignedProducts(take: number, cursor?: number) {
     const assignedProductList =
       await this.prismaService.assignedProducts.findMany({
-        take: count ? +count : 10,
+        take: take ? take : 10,
         ...(cursor &&
           +cursor > 0 && {
             skip: 1,
