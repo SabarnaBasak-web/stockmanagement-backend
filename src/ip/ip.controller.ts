@@ -6,15 +6,11 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { IpService } from './ip.service';
-import {
-  AddIpDto,
-  IpAssignedResponseDto,
-  IpWithEmployeeResponseDto,
-  UpdateIpDto,
-} from './dto';
+import { AddIpDto, IpAssignedResponseDto, UpdateIpDto } from './dto';
 import { JwtGuard } from 'src/auth/guard/auth-guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import {
@@ -27,6 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { IpResponseDto } from './dto/';
 import { RoleEnum } from 'src/enums/role.enum';
+import { PaginationQueryFilter } from 'src/assigned-products/dto';
 
 @UseGuards(JwtGuard)
 @Controller('ip')
@@ -67,10 +64,10 @@ export class IpController {
   @Get()
   @ApiOkResponse({
     description: 'Get all Ips with employee details',
-    type: IpWithEmployeeResponseDto,
+    type: IpResponseDto,
   })
-  getAllIps() {
-    return this.ipService.getAllIps();
+  getAllIps(@Query() paginationQuery: PaginationQueryFilter) {
+    return this.ipService.getAllIps(paginationQuery);
   }
 
   @Roles(RoleEnum.SUPERADMIN)

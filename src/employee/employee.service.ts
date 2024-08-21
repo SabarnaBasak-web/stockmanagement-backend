@@ -44,4 +44,16 @@ export class EmployeeService {
     }
     return employeeData;
   }
+  async getLoggedInEmployeeDetailsById(userId: number) {
+    const employeeData = await this.prismaService.login.findFirst({
+      where: { id: userId, active: true },
+      include: { employee: true },
+    });
+
+    if (!employeeData) {
+      httpExceptionHandler('Incorrect employeeId', HttpStatus.BAD_REQUEST);
+    }
+    delete employeeData.password;
+    return employeeData;
+  }
 }

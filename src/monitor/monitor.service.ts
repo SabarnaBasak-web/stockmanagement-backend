@@ -1,19 +1,19 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AddUpsPayload, UpdateUpsPayload, UpsCreatedResponse } from './dto';
+import { CreatedMonitorResponse, CreateMonitorRequest } from './dto';
 import { httpExceptionHandler } from 'src/helper/errorhelper';
 import { PaginationQueryFilter } from 'src/assigned-products/dto';
 
 @Injectable()
-export class UpsService {
+export class MonitorService {
   constructor(private prismaService: PrismaService) {}
 
-  async insertUpsDetails(
-    upsDetails: AddUpsPayload,
-  ): Promise<UpsCreatedResponse> {
-    const { vendorId } = upsDetails;
+  async addMonitor(
+    payload: CreateMonitorRequest,
+  ): Promise<CreatedMonitorResponse> {
+    const { vendorId } = payload;
     const productDetails = await this.prismaService.products.findFirst({
-      where: { name: 'Ups' },
+      where: { name: 'Monitor' },
     });
     const vendorDetails = await this.prismaService.vendor.findUnique({
       where: {
@@ -23,22 +23,20 @@ export class UpsService {
     if (!vendorDetails) {
       httpExceptionHandler('Incorrect vendor Id', HttpStatus.BAD_REQUEST);
     }
-    return await this.prismaService.ups.create({
+    // TODO check if the serial number exists
+    return await this.prismaService.monitor.create({
       data: {
-        ...upsDetails,
+        ...payload,
         productId: productDetails.id,
-        eWaste: false,
-        isAmc: true,
       },
     });
   }
 
-  async fetchAllUpsList(
+  async getMonitorsList(
     paginationQuery: PaginationQueryFilter,
-  ): Promise<UpsCreatedResponse[]> {
+  ): Promise<CreatedMonitorResponse[]> {
     const { take, cursor } = paginationQuery;
-
-    return await this.prismaService.ups.findMany({
+    return await this.prismaService.monitor.findMany({
       take: take ? take : 10,
       ...(cursor &&
         +cursor > 0 && {
@@ -47,29 +45,6 @@ export class UpsService {
         }),
       orderBy: {
         brandName: 'asc',
-      },
-    });
-  }
-
-  async updateUpsDetails(
-    updatePayload: UpdateUpsPayload,
-    upsId: number,
-  ): Promise<UpsCreatedResponse> {
-    const upsDetails = await this.prismaService.ups.findUnique({
-      where: {
-        id: upsId,
-      },
-    });
-
-    if (!upsDetails)
-      httpExceptionHandler('Invalid ups id', HttpStatus.BAD_REQUEST);
-
-    return await this.prismaService.ups.update({
-      where: {
-        id: upsId,
-      },
-      data: {
-        ...updatePayload,
       },
     });
   }

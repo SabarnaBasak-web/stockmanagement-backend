@@ -11,7 +11,7 @@ export class PaginationQueryFilter {
   @Type(() => Number)
   @IsNumber()
   @IsOptional()
-  count: number;
+  take: number;
 
   @ApiProperty({
     description:

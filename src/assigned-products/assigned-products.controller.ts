@@ -61,8 +61,8 @@ export class AssignedProductsController {
   @Roles(RoleEnum.SUPERADMIN)
   @Get()
   getAllAssignedProducts(@Query() queryFilter: PaginationQueryFilter) {
-    const { count, cursor } = queryFilter;
-    return this.assignedProductService.getAllAssignedProducts(count, cursor);
+    const { take, cursor } = queryFilter;
+    return this.assignedProductService.getAllAssignedProducts(take, cursor);
   }
 
   @ApiOkResponse({
