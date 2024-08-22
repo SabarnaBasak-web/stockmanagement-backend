@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AddIpDto, UpdateIpDto } from './dto';
+import { AddIpDto, AssignIpToEmployeeDto, UpdateIpDto } from './dto';
 import { httpExceptionHandler } from 'src/helper/errorhelper';
 import { PaginationQueryFilter } from 'src/assigned-products/dto';
 
@@ -18,7 +18,7 @@ export class IpService {
     return ipAdded;
   }
 
-  async assignIpToEmployee(ipId: number, body: UpdateIpDto) {
+  async assignIpToEmployee(ipId: number, body: AssignIpToEmployeeDto) {
     const { employeeId } = body;
     const employee = await this.prisma.employee.findUnique({
       where: {
@@ -77,7 +77,7 @@ export class IpService {
     });
   }
 
-  async updateIpNumber(ipNumber: string, ipId: number) {
+  async updateIpDetails(updateIpPayload: UpdateIpDto, ipId: number) {
     const ipDetails = await this.prisma.ip.findUnique({ where: { id: ipId } });
     if (!ipDetails) {
       throw new HttpException('invalid IP id', HttpStatus.NOT_FOUND);
@@ -85,7 +85,7 @@ export class IpService {
 
     const updatedIp = await this.prisma.ip.update({
       data: {
-        ipNumber: ipNumber,
+        ...updateIpPayload,
       },
       where: {
         id: ipId,

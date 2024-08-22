@@ -4,4 +4,5 @@ export {
   IpAssignedResponseDto,
   IpWithEmployeeResponseDto,
 } from './IpResponse.dto';
-export { UpdateIpDto } from './updateIp.dto';
+export { AssignIpToEmployeeDto } from './AssignIpToEmployee.dto';
+export { UpdateIpDto } from './UpdateIp.dto';

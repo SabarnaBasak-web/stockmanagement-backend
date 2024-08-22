@@ -1,8 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
 export class UpdateIpDto {
-  @ApiProperty({ description: 'employeeId', example: 'emp-001' })
-  @IsNotEmpty()
-  employeeId: number;
+  @ApiProperty({ description: 'Ip Number', example: '10.1.1.1' })
+  @IsOptional()
+  ipNumber: string;
+
+  @ApiProperty({ description: 'is the ip active', example: 'true' })
+  @IsOptional()
+  active: boolean;
+
+  @ApiProperty({ description: 'ip in use', example: 'false' })
+  @IsOptional()
+  inUse: boolean;
 }

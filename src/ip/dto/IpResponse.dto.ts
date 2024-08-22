@@ -13,7 +13,7 @@ export class IpDataResponseDto {
 }
 
 export class IpResponseDto {
-  @ApiProperty({ description: 'List of all Ips' })
+  @ApiProperty({ description: 'List of all Ips', type: [IpDataResponseDto] })
   data: IpDataResponseDto;
   @ApiProperty({ description: 'total number of rows', example: '10' })
   total: number;
