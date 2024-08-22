@@ -28,7 +28,6 @@ export class AddEmployeeDto {
     example: '1234567890',
   })
   @IsNotEmpty()
-  @IsPhoneNumber('IN')
   mobileNumber: string;
   @ApiProperty({
     description: 'Employee Id of employee',

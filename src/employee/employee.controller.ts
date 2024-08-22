@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard/auth-guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
@@ -25,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { RoleEnum } from 'src/enums/role.enum';
 import { GetUser } from 'src/auth/decorator';
+import { PaginationQueryFilter } from 'src/assigned-products/dto';
 
 @UseGuards(JwtGuard, RoleGuard)
 @Controller('employee')
@@ -65,7 +67,7 @@ export class EmployeeController {
     description: 'All Employee Details',
     type: EmployeesResponseDto,
   })
-  fetchAllEmployee() {
-    return this.employeeService.getAllEmployees();
+  fetchAllEmployee(@Query() paginationQuery: PaginationQueryFilter) {
+    return this.employeeService.getAllEmployees(paginationQuery);
   }
 }

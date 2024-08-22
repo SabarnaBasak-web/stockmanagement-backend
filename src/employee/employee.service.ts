@@ -2,6 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { AddEmployeeDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { httpExceptionHandler } from 'src/helper/errorhelper';
+import { PaginationQueryFilter } from 'src/assigned-products/dto';
 
 @Injectable()
 export class EmployeeService {
@@ -27,10 +28,18 @@ export class EmployeeService {
     return createdEmployee;
   }
 
-  async getAllEmployees() {
-    return await this.prismaService.employee.findMany({
-      include: { Ip: true },
+  async getAllEmployees(paginationQuery: PaginationQueryFilter) {
+    const { take, cursor } = paginationQuery;
+    const employeeList = await this.prismaService.employee.findMany({
+      take: take ? take : 10,
+      ...(cursor &&
+        +cursor > 0 && {
+          skip: 1,
+          cursor: { id: +cursor },
+        }),
     });
+    const totalCount = await this.prismaService.employee.count();
+    return { data: employeeList, total: totalCount };
   }
 
   async getEmployeeDetailsById(userId: number) {
