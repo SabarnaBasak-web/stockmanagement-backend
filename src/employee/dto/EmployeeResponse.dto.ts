@@ -45,3 +45,13 @@ export class EmployeeResponseDto {
   })
   Ip: IpResponseDto;
 }
+
+export class EmployeesResponseDto {
+  @ApiProperty({
+    description: 'List of all employees',
+    type: [EmployeeResponseDto],
+  })
+  data: [EmployeeResponseDto];
+  @ApiProperty({ description: 'total number of rows', example: '10' })
+  total: number;
+}

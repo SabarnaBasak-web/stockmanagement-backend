@@ -10,7 +10,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { IpService } from './ip.service';
-import { AddIpDto, IpAssignedResponseDto, UpdateIpDto } from './dto';
+import {
+  AddIpDto,
+  IpAssignedResponseDto,
+  AssignIpToEmployeeDto,
+  UpdateIpDto,
+} from './dto';
 import { JwtGuard } from 'src/auth/guard/auth-guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import {
@@ -54,7 +59,7 @@ export class IpController {
     description: 'Ip already in use',
   })
   assignIpToEmployee(
-    @Body() body: UpdateIpDto,
+    @Body() body: AssignIpToEmployeeDto,
     @Param('id', ParseIntPipe) ipId: number,
   ) {
     return this.ipService.assignIpToEmployee(ipId, body);
@@ -78,10 +83,10 @@ export class IpController {
 
   @Roles(RoleEnum.SUPERADMIN)
   @Put(':id')
-  updateIdNumber(
-    @Body('ipNumber') ipNumber: string,
+  updateIp(
+    @Body() updateIpPayload: UpdateIpDto,
     @Param('id', ParseIntPipe) ipId: number,
   ) {
-    return this.ipService.updateIpNumber(ipNumber, ipId);
+    return this.ipService.updateIpDetails(updateIpPayload, ipId);
   }
 }

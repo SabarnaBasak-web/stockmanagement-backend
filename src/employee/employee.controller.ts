@@ -6,12 +6,17 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard/auth-guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { EmployeeService } from './employee.service';
-import { AddEmployeeDto, EmployeeResponseDto } from './dto';
+import {
+  AddEmployeeDto,
+  EmployeeResponseDto,
+  EmployeesResponseDto,
+} from './dto';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -21,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { RoleEnum } from 'src/enums/role.enum';
 import { GetUser } from 'src/auth/decorator';
+import { PaginationQueryFilter } from 'src/assigned-products/dto';
 
 @UseGuards(JwtGuard, RoleGuard)
 @Controller('employee')
@@ -40,8 +46,6 @@ export class EmployeeController {
     return this.employeeService.createEmployee(employeeDto);
   }
 
-  @Roles(RoleEnum.SUPERADMIN)
-  @Roles(RoleEnum.SUPERADMIN)
   @Get('/loggedUser')
   getLoggedInUserDetails(@GetUser('id') userId: number) {
     return this.employeeService.getLoggedInEmployeeDetailsById(userId);
@@ -61,9 +65,9 @@ export class EmployeeController {
   @Get()
   @ApiOkResponse({
     description: 'All Employee Details',
-    type: [EmployeeResponseDto],
+    type: EmployeesResponseDto,
   })
-  fetchAllEmployee() {
-    return this.employeeService.getAllEmployees();
+  fetchAllEmployee(@Query() paginationQuery: PaginationQueryFilter) {
+    return this.employeeService.getAllEmployees(paginationQuery);
   }
 }
