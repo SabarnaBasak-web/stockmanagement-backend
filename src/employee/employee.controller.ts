@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Post,
+  Put,
   UseGuards,
   Get,
   Param,
@@ -16,6 +17,7 @@ import {
   AddEmployeeDto,
   EmployeeResponseDto,
   EmployeesResponseDto,
+  UpdateEmployeeDto,
 } from './dto';
 import {
   ApiBadRequestResponse,
@@ -69,5 +71,21 @@ export class EmployeeController {
   })
   fetchAllEmployee(@Query() paginationQuery: PaginationQueryFilter) {
     return this.employeeService.getAllEmployees(paginationQuery);
+  }
+
+  @Roles(RoleEnum.SUPERADMIN)
+  @Put(':id')
+  @ApiOkResponse({
+    description: 'Update employee details',
+    type: EmployeeResponseDto,
+  })
+  updateExistingEmployee(
+    @Body() existingEmployeePayload: UpdateEmployeeDto,
+    @Param('id', ParseIntPipe) empId: number,
+  ) {
+    return this.employeeService.updateEmployeeDetails(
+      existingEmployeePayload,
+      empId,
+    );
   }
 }
