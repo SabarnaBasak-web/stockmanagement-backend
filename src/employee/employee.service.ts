@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { AddEmployeeDto } from './dto';
+import { AddEmployeeDto, UpdateEmployeeDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { httpExceptionHandler } from 'src/helper/errorhelper';
 import { PaginationQueryFilter } from 'src/assigned-products/dto';
@@ -37,6 +37,7 @@ export class EmployeeService {
           skip: 1,
           cursor: { id: +cursor },
         }),
+      where: { active: true },
     });
     const totalCount = await this.prismaService.employee.count();
     return { data: employeeList, total: totalCount };
@@ -64,5 +65,21 @@ export class EmployeeService {
     }
     delete employeeData.password;
     return employeeData;
+  }
+
+  async updateEmployeeDetails(empPayload: UpdateEmployeeDto, empId: number) {
+    const employeeExists = await this.prismaService.employee.findFirst({
+      where: { id: empId },
+    });
+
+    if (!employeeExists) {
+      httpExceptionHandler('Employee does not exists', HttpStatus.BAD_REQUEST);
+    }
+
+    const response = await this.prismaService.employee.update({
+      data: { ...empPayload },
+      where: { id: empId },
+    });
+    return response;
   }
 }
