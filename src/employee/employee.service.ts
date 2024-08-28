@@ -82,4 +82,16 @@ export class EmployeeService {
     });
     return response;
   }
+
+  async getEmployeeDetailsByEmployeeId(empId: string) {
+    const employeeData = await this.prismaService.employee.findFirst({
+      where: { empId: empId },
+      include: { Ip: true },
+    });
+
+    if (!employeeData) {
+      httpExceptionHandler('Incorrect employeeId', HttpStatus.BAD_REQUEST);
+    }
+    return employeeData;
+  }
 }

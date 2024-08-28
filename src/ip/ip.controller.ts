@@ -76,6 +76,16 @@ export class IpController {
   }
 
   @Roles(RoleEnum.SUPERADMIN)
+  @Get('/unusedIpList')
+  @ApiOkResponse({
+    description: 'Get all Ips with employee details',
+    type: IpResponseDto,
+  })
+  getAllUnusedIps() {
+    return this.ipService.getUnusedIps();
+  }
+
+  @Roles(RoleEnum.SUPERADMIN)
   @Get(':id')
   getIpDetailsById(@Param('id', ParseIntPipe) id: number) {
     return this.ipService.getIpDetailsById(id);

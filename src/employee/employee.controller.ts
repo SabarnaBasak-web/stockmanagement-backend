@@ -63,6 +63,16 @@ export class EmployeeController {
     return this.employeeService.getEmployeeDetailsById(userId);
   }
 
+  @Get('/employee/:id')
+  @ApiOkResponse({
+    description: 'Details of employee by employee id',
+    type: EmployeeResponseDto,
+  })
+  @ApiBadRequestResponse({ description: 'Incorrect Employee Id' })
+  fetchEmployeeDetailsByEmployeeId(@Param('id') empId: string) {
+    return this.employeeService.getEmployeeDetailsByEmployeeId(empId);
+  }
+
   @Roles(RoleEnum.SUPERADMIN)
   @Get()
   @ApiOkResponse({

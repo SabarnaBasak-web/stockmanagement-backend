@@ -71,6 +71,14 @@ export class IpService {
     return { data: allIps, total: totalRows };
   }
 
+  async getUnusedIps() {
+    const unusedIps = await this.prisma.ip.findMany({
+      where: { inUse: false },
+    });
+
+    return unusedIps;
+  }
+
   async getIpDetailsById(ipId: number) {
     return await this.prisma.ip.findFirst({
       where: { id: ipId },
