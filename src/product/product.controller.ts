@@ -1,4 +1,4 @@
-import { AddProductDto } from './dto';
+import { AddProductDto, ProductResponseDto } from './dto';
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard/auth-guard';
 import { ProductService } from './product.service';
@@ -28,7 +28,7 @@ export class ProductController {
   @ApiResponse({
     status: 200,
     description: 'Fetch All Products',
-    type: 'Product',
+    type: [ProductResponseDto],
   })
   @Roles(RoleEnum.SUPERADMIN)
   @Get()

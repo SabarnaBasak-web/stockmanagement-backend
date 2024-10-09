@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AddProductDto } from './dto';
+import { AddProductDto, ProductResponseDto } from './dto';
 import { httpExceptionHandler } from 'src/helper/errorhelper';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class ProductService {
     return newProduct;
   }
 
-  async getAllProducts() {
+  async getAllProducts(): Promise<ProductResponseDto[]> {
     return await this.prisma.products.findMany({ where: { active: true } });
   }
 }
