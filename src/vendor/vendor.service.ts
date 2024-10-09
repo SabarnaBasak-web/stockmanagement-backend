@@ -27,11 +27,11 @@ export class VendorService {
   }
 
   async fetchAllVendors(
-    take?: string,
-    cursor?: string,
+    take?: number,
+    cursor?: number,
   ): Promise<CreatedVendorResponse[]> {
     return await this.prismaService.vendor.findMany({
-      take: take ? parseInt(take) : 10,
+      take: take ? take : 10,
       ...(cursor &&
         +cursor > 0 && {
           skip: 1,
@@ -45,11 +45,11 @@ export class VendorService {
 
   async getVendorDetailsByName(
     searchName: string,
-    take?: string,
-    cursor?: string,
+    take?: number,
+    cursor?: number,
   ): Promise<CreatedVendorResponse[]> {
     return await this.prismaService.vendor.findMany({
-      take: take ? parseInt(take) : 10,
+      take: take ?? 10,
       ...(cursor &&
         +cursor > 0 && {
           skip: 1,
