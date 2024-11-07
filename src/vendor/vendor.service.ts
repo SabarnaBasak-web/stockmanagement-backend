@@ -6,6 +6,7 @@ import {
   UpdateVendorDetailsPayload,
 } from './dto';
 import { httpExceptionHandler } from 'src/helper/errorhelper';
+import { VendorResponseDto } from './dto/CreatedVendorResponse.dto';
 
 @Injectable()
 export class VendorService {
@@ -29,18 +30,20 @@ export class VendorService {
   async fetchAllVendors(
     take?: number,
     cursor?: number,
-  ): Promise<CreatedVendorResponse[]> {
-    return await this.prismaService.vendor.findMany({
-      take: take ? take : 10,
-      ...(cursor &&
-        +cursor > 0 && {
-          skip: 1,
-          cursor: { id: +cursor },
-        }),
-      orderBy: {
-        name: 'asc',
-      },
+  ): Promise<VendorResponseDto> {
+    let vendors;
+    if (!take && !cursor) {
+      vendors = await this.prismaService.vendor.findMany();
+    }
+    vendors = await this.prismaService.vendor.findMany({
+      take: take,
+      ...(+cursor > 0 && {
+        skip: 1,
+        cursor: { id: +cursor },
+      }),
     });
+    const totalRows = await this.prismaService.vendor.count();
+    return { data: vendors, total: totalRows };
   }
 
   async getVendorDetailsByName(
@@ -78,7 +81,7 @@ export class VendorService {
       httpExceptionHandler('Invalid vendor details', HttpStatus.BAD_REQUEST);
     }
 
-    await this.prismaService.vendor.update({
+    return await this.prismaService.vendor.update({
       where: {
         id: vendorId,
       },

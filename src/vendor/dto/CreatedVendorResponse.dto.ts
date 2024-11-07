@@ -25,3 +25,13 @@ export class CreatedVendorResponse {
   })
   dateOfRegistry: Date;
 }
+
+export class VendorResponseDto {
+  @ApiProperty({
+    description: 'List of all Vendors',
+    type: [CreatedVendorResponse],
+  })
+  data: CreatedVendorResponse[];
+  @ApiProperty({ description: 'total number of rows', example: '10' })
+  total: number;
+}

@@ -28,6 +28,7 @@ import {
 } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guard/auth-guard';
 import { VendorPaginationQueryFilter } from './dto/VendorPaginationQuery.dto';
+import { VendorResponseDto } from './dto/CreatedVendorResponse.dto';
 
 @UseGuards(JwtGuard)
 @ApiTags('Vendors')
@@ -56,12 +57,12 @@ export class VendorController {
     description: 'Return all vendors',
     type: [CreatedVendorResponse],
   })
-  @ApiQuery({ name: 'search', required: false }, {})
+  @ApiQuery({ name: 'search', required: false })
   @Roles(RoleEnum.SUPERADMIN)
   @Get()
   getAllVendors(
     @Query() vendorPaginationQuery: VendorPaginationQueryFilter,
-  ): Promise<CreatedVendorResponse[]> {
+  ): Promise<VendorResponseDto | CreatedVendorResponse[]> {
     const { search, take, cursor } = vendorPaginationQuery;
     return search
       ? this.vendorService.getVendorDetailsByName(search, take, cursor)
@@ -73,7 +74,7 @@ export class VendorController {
   updateVendorDetails(
     @Body() updateDetails: UpdateVendorDetailsPayload,
     @Param('id', ParseIntPipe) vendorId: number,
-  ): Promise<void> {
+  ): Promise<CreatedVendorResponse> {
     return this.vendorService.updateDetails(updateDetails, vendorId);
   }
 
