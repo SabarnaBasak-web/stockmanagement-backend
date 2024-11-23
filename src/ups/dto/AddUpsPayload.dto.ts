@@ -41,14 +41,14 @@ export class AddUpsPayload {
     example: '12-08-2024',
   })
   @IsOptional()
-  warrentyStartDate: Date;
+  warrentyStartDate: Date | null;
 
   @ApiProperty({
     description: 'Warrenty end date',
     example: '11-08-2026',
   })
   @IsOptional()
-  warrentyEndDate: Date;
+  warrentyEndDate: Date | null;
 
   @ApiProperty({
     description: 'Defunct',
@@ -76,7 +76,7 @@ export class AddUpsPayload {
     example: '21-06-2024',
   })
   @IsOptional()
-  deliveryDate: Date;
+  deliveryDate: Date | null;
 
   @ApiProperty({
     description: 'Vendor id',

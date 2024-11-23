@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CreatedVendorResponse } from 'src/vendor/dto';
 
 export class UpsCreatedResponse {
   @ApiProperty({ description: 'unique id of the ups', example: '1' })
@@ -72,4 +73,22 @@ export class UpsCreatedResponse {
     example: 'vendor-001',
   })
   vendorId: number;
+}
+
+export class UpsResponse extends UpsCreatedResponse {
+  @ApiProperty({
+    description: 'Vendor Details',
+    example: CreatedVendorResponse,
+  })
+  vendor: CreatedVendorResponse;
+}
+
+export class UpsResponseDto {
+  @ApiProperty({
+    description: 'List of all Vendors',
+    type: [UpsResponse],
+  })
+  data: UpsResponse[];
+  @ApiProperty({ description: 'total number of rows', example: '10' })
+  total: number;
 }
