@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AddUpsPayload, UpdateUpsPayload, UpsCreatedResponse } from './dto';
 import { httpExceptionHandler } from 'src/helper/errorhelper';
 import { PaginationQueryFilter } from 'src/assigned-products/dto';
+import { UpsResponse, UpsResponseDto } from './dto/UpsCreatedResponse.dto';
 
 @Injectable()
 export class UpsService {
@@ -35,10 +36,10 @@ export class UpsService {
 
   async fetchAllUpsList(
     paginationQuery: PaginationQueryFilter,
-  ): Promise<UpsCreatedResponse[]> {
+  ): Promise<UpsResponseDto> {
     const { take, cursor } = paginationQuery;
 
-    return await this.prismaService.ups.findMany({
+    const upsList = await this.prismaService.ups.findMany({
       take: take ? take : 10,
       ...(cursor &&
         +cursor > 0 && {
@@ -48,13 +49,19 @@ export class UpsService {
       orderBy: {
         brandName: 'asc',
       },
+      include: {
+        vendor: true,
+      },
     });
+
+    const totalRows = await this.prismaService.ups.count();
+    return { data: upsList, total: totalRows };
   }
 
   async updateUpsDetails(
     updatePayload: UpdateUpsPayload,
     upsId: number,
-  ): Promise<UpsCreatedResponse> {
+  ): Promise<UpsResponse> {
     const upsDetails = await this.prismaService.ups.findUnique({
       where: {
         id: upsId,
@@ -64,12 +71,21 @@ export class UpsService {
     if (!upsDetails)
       httpExceptionHandler('Invalid ups id', HttpStatus.BAD_REQUEST);
 
-    return await this.prismaService.ups.update({
+    await this.prismaService.ups.update({
       where: {
         id: upsId,
       },
       data: {
         ...updatePayload,
+      },
+    });
+
+    return await this.prismaService.ups.findFirst({
+      where: {
+        id: upsId,
+      },
+      include: {
+        vendor: true,
       },
     });
   }

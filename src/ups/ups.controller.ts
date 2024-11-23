@@ -22,6 +22,7 @@ import { Roles } from 'src/auth/roles/roles.decorator';
 import { RoleEnum } from 'src/enums/role.enum';
 import { AddUpsPayload, UpdateUpsPayload, UpsCreatedResponse } from './dto';
 import { PaginationQueryFilter } from 'src/assigned-products/dto';
+import { UpsResponse, UpsResponseDto } from './dto/UpsCreatedResponse.dto';
 
 @UseGuards(JwtGuard)
 @ApiTags('Ups')
@@ -48,7 +49,7 @@ export class UpsController {
   @Get()
   getAllUpsList(
     @Query() paginationQuery: PaginationQueryFilter,
-  ): Promise<UpsCreatedResponse[]> {
+  ): Promise<UpsResponseDto> {
     return this.upsService.fetchAllUpsList(paginationQuery);
   }
 
@@ -64,7 +65,7 @@ export class UpsController {
   updateUpsDetails(
     @Body() upsDetails: UpdateUpsPayload,
     @Param('id', ParseIntPipe) upsId: number,
-  ): Promise<UpsCreatedResponse> {
+  ): Promise<UpsResponse> {
     return this.upsService.updateUpsDetails(upsDetails, upsId);
   }
 }
