@@ -62,4 +62,8 @@ export class UpdateUpsPayload {
   })
   @IsOptional()
   deliveryDate: Date;
+
+  @ApiProperty({ description: 'Vendor Id', example: '1' })
+  @IsOptional()
+  vendorId: number;
 }
