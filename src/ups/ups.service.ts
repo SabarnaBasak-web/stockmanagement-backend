@@ -46,6 +46,9 @@ export class UpsService {
           skip: 1,
           cursor: { id: +cursor },
         }),
+      where: {
+        eWaste: false,
+      },
       orderBy: {
         brandName: 'asc',
       },
