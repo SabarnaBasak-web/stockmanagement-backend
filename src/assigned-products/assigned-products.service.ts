@@ -35,6 +35,17 @@ export class AssignedProductsService {
       httpExceptionHandler('Invalid serial number', HttpStatus.BAD_REQUEST);
     }
 
+    // Update the delivery date of the product
+    await this.prismaService[name].update({
+      where: { serialNo: serialNo },
+      data: { deliveryDate: new Date(Date.now()) },
+    });
+    // update ip in use
+    await this.prismaService.ip.update({
+      where: { id: ipId },
+      data: { inUse: true },
+    });
+    // update assigned product table
     return await this.prismaService.assignedProducts.create({
       data: {
         ...assignProductPayload,
@@ -43,16 +54,24 @@ export class AssignedProductsService {
     });
   }
 
-  async getAllAssignedProducts(take: number, cursor?: number) {
+  async getAllAssignedProducts(take?: number, cursor?: number) {
+    if (!take && !cursor) {
+      return await this.prismaService.assignedProducts.findMany({
+        include: { employee: true, ip: true, product: true },
+        orderBy: {
+          dateOfIssue: 'desc',
+        },
+      });
+    }
     const assignedProductList =
       await this.prismaService.assignedProducts.findMany({
-        take: take ? take : 10,
+        take: take,
         ...(cursor &&
           +cursor > 0 && {
             skip: 1,
             cursor: { id: +cursor },
           }),
-        include: { employee: true },
+        include: { employee: true, ip: true, product: true },
         orderBy: {
           dateOfIssue: 'desc',
         },
@@ -61,11 +80,21 @@ export class AssignedProductsService {
     return assignedProductList;
   }
 
+  async getAssignedProductsByEmployeeId(empId: string) {
+    const assignedProductsList =
+      await this.prismaService.assignedProducts.findMany({
+        where: { empId: empId },
+        include: { employee: true },
+      });
+
+    return assignedProductsList;
+  }
+
   async getAssignedProductsBySerialNumber(serialNumber: string) {
     const assignedProductsList =
       await this.prismaService.assignedProducts.findUnique({
         where: { serialNo: serialNumber },
-        include: { employee: true },
+        include: { employee: true, product: true, ip: true },
       });
 
     return assignedProductsList;

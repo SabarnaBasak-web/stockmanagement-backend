@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { EmployeeResponseDto } from 'src/employee/dto';
+import { IpDataResponseDto } from 'src/ip/dto/IpResponse.dto';
+import { ProductResponseDto } from 'src/product/dto';
 
 export class AssignedProductWithEmployeeDetailsResponseDto {
   @ApiProperty({
@@ -40,4 +42,10 @@ export class AssignedProductWithEmployeeDetailsResponseDto {
     example: EmployeeResponseDto,
   })
   employee: EmployeeResponseDto;
+
+  @ApiProperty({ description: 'product details', example: ProductResponseDto })
+  product: ProductResponseDto;
+
+  @ApiProperty({ description: 'ip details', example: IpDataResponseDto })
+  ip: IpDataResponseDto;
 }

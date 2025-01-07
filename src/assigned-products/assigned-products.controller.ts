@@ -70,10 +70,22 @@ export class AssignedProductsController {
     type: [AssignedProductWithEmployeeDetailsResponseDto],
   })
   @Roles(RoleEnum.SUPERADMIN)
-  @Get('/:serialNumber')
+  @Get(':serialNumber')
   searchAssignedProduct(@Param('serialNumber') serialNumber: string) {
     return this.assignedProductService.getAssignedProductsBySerialNumber(
       serialNumber,
     );
+  }
+
+  @ApiOkResponse({
+    description: 'Get the list of assigned products based on the employee id',
+    type: [AssignedProductWithEmployeeDetailsResponseDto],
+  })
+  @Roles(RoleEnum.SUPERADMIN)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @Get(':empId')
+  getAssignedProductsByEmployeeId(@Param('empId') empId: string) {
+    console.log('@@ empId', empId);
+    return this.assignedProductService.getAssignedProductsByEmployeeId(empId);
   }
 }
