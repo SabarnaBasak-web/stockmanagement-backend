@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CreatedVendorResponse } from 'src/vendor/dto';
 
 export class CreatedMonitorResponse {
   @ApiProperty({ description: 'gem number', example: 'gem-001' })
@@ -66,4 +67,21 @@ export class CreatedMonitorResponse {
 
   @ApiProperty({ description: 'display size', example: '32inch' })
   displaySize: string;
+}
+export class MonitorResponse extends CreatedMonitorResponse {
+  @ApiProperty({
+    description: 'Vendor Details',
+    example: CreatedVendorResponse,
+  })
+  vendor: CreatedVendorResponse;
+}
+
+export class MonitorResponseDto {
+  @ApiProperty({
+    description: 'List of all Vendors',
+    type: [MonitorResponse],
+  })
+  data: MonitorResponse[];
+  @ApiProperty({ description: 'total number of rows', example: '10' })
+  total: number;
 }
