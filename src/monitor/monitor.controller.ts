@@ -6,6 +6,7 @@ import { Roles } from 'src/auth/roles/roles.decorator';
 import { RoleEnum } from 'src/enums/role.enum';
 import { CreatedMonitorResponse, CreateMonitorRequest } from './dto';
 import { PaginationQueryFilter } from 'src/assigned-products/dto';
+import { MonitorResponseDto } from './dto/CreatedMonitorResponse.dto';
 
 @UseGuards(JwtGuard)
 @ApiTags('Monitor')
@@ -34,7 +35,7 @@ export class MonitorController {
   @Get()
   getMonitorsList(
     @Param() paginationQuery: PaginationQueryFilter,
-  ): Promise<CreatedMonitorResponse[]> {
+  ): Promise<MonitorResponseDto> {
     return this.monitorService.getMonitorsList(paginationQuery);
   }
 }
