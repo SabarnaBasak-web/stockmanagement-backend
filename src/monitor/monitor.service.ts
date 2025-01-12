@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatedMonitorResponse, CreateMonitorRequest } from './dto';
 import { httpExceptionHandler } from 'src/helper/errorhelper';
 import { PaginationQueryFilter } from 'src/assigned-products/dto';
+import { MonitorResponseDto } from './dto/CreatedMonitorResponse.dto';
 
 @Injectable()
 export class MonitorService {
@@ -34,9 +35,9 @@ export class MonitorService {
 
   async getMonitorsList(
     paginationQuery: PaginationQueryFilter,
-  ): Promise<CreatedMonitorResponse[]> {
+  ): Promise<MonitorResponseDto> {
     const { take, cursor } = paginationQuery;
-    return await this.prismaService.monitor.findMany({
+    const monitorList = await this.prismaService.monitor.findMany({
       take: take ? take : 10,
       ...(cursor &&
         +cursor > 0 && {
@@ -46,6 +47,11 @@ export class MonitorService {
       orderBy: {
         brandName: 'asc',
       },
+      include: {
+        vendor: true,
+      },
     });
+    const totalRows = await this.prismaService.monitor.count();
+    return { data: monitorList, total: totalRows };
   }
 }
